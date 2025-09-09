@@ -1,0 +1,9 @@
+package gob.gt.com.lab.demo.repository;
+
+import gob.gt.com.lab.demo.entity.Product;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface ProductRepository extends JpaRepository<Product, Long> {
+}

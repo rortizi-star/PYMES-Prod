@@ -1,17 +1,5 @@
-    public List<Invoice> getInvoicesByDateRange(java.time.LocalDate start, java.time.LocalDate end) {
-    return invoiceRepository.findAll().stream()
-        .filter(inv -> inv.getDate() != null &&
-            !inv.getDate().isBefore(start) && !inv.getDate().isAfter(end))
-        .toList();
-    }
 
-    public Double getTotalSalesByCustomer(Long customerId) {
-    return invoiceRepository.findAll().stream()
-        .filter(inv -> inv.getCustomer() != null && inv.getCustomer().getId().equals(customerId))
-        .mapToDouble(inv -> inv.getTotal() != null ? inv.getTotal() : 0.0)
-        .sum();
-    }
-package gob.gt.com.lab.demo.service;
+    package gob.gt.com.lab.demo.service;
 
 import gob.gt.com.lab.demo.entity.Invoice;
 import gob.gt.com.lab.demo.entity.InvoiceLine;
@@ -35,6 +23,20 @@ public class InvoiceService {
     private CustomerRepository customerRepository;
     @Autowired
     private ProductRepository productRepository;
+
+    public List<Invoice> getInvoicesByDateRange(java.time.LocalDate start, java.time.LocalDate end) {
+        return invoiceRepository.findAll().stream()
+            .filter(inv -> inv.getDate() != null &&
+                !inv.getDate().isBefore(start) && !inv.getDate().isAfter(end))
+            .toList();
+    }
+
+    public Double getTotalSalesByCustomer(Long customerId) {
+        return invoiceRepository.findAll().stream()
+            .filter(inv -> inv.getCustomer() != null && inv.getCustomer().getId().equals(customerId))
+            .mapToDouble(inv -> inv.getTotal() != null ? inv.getTotal() : 0.0)
+            .sum();
+    }
 
     public List<Invoice> getAllInvoices() {
         return invoiceRepository.findAll();

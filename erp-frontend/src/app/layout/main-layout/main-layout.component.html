@@ -1,0 +1,33 @@
+<mat-sidenav-container class="sidenav-container">
+	<mat-sidenav #drawer class="sidenav" mode="side" [(opened)]="opened">
+		<mat-toolbar color="primary">ERP</mat-toolbar>
+		<mat-nav-list>
+			<a mat-list-item routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+			<a mat-list-item routerLink="/users" routerLinkActive="active">Usuarios</a>
+			<a mat-list-item routerLink="/customers" routerLinkActive="active">Clientes</a>
+			<a mat-list-item routerLink="/suppliers" routerLinkActive="active">Proveedores</a>
+			<a mat-list-item routerLink="/products" routerLinkActive="active">Productos</a>
+			<a mat-list-item routerLink="/invoices" routerLinkActive="active">Facturas</a>
+			<a mat-list-item routerLink="/purchases" routerLinkActive="active">Compras</a>
+			<a mat-list-item routerLink="/banks" routerLinkActive="active">Bancos</a>
+			<a mat-list-item routerLink="/cash-registers" routerLinkActive="active">Cajas</a>
+			<a mat-list-item routerLink="/reports" routerLinkActive="active">Reportes</a>
+			<a mat-list-item routerLink="/settings" routerLinkActive="active">Configuración</a>
+		</mat-nav-list>
+	</mat-sidenav>
+	<mat-sidenav-content>
+		<mat-toolbar color="primary">
+			<button mat-icon-button (click)="drawer.toggle()">
+				<mat-icon>menu</mat-icon>
+			</button>
+			<span>ERP Sistema</span>
+			<span class="spacer"></span>
+			<button mat-icon-button>
+				<mat-icon>account_circle</mat-icon>
+			</button>
+		</mat-toolbar>
+		<div class="main-content">
+			<router-outlet></router-outlet>
+		</div>
+	</mat-sidenav-content>
+</mat-sidenav-container>

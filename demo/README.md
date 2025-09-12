@@ -128,3 +128,76 @@ Este módulo permite gestionar los proveedores de la empresa. Incluye operacione
 1. Inicia sesión y obtén el token JWT.
 2. Usa el token en la cabecera `Authorization: Bearer <token>`.
 3. Realiza peticiones a los endpoints anteriores.
+
+---
+
+# Módulo: Bancos y Caja
+
+Este módulo permite gestionar bancos, cuentas bancarias, caja chica y sus movimientos.
+
+## Endpoints principales
+
+### Bancos
+- `GET /api/banks` — Lista todos los bancos
+- `GET /api/banks/{id}` — Consulta un banco por ID
+- `POST /api/banks` — Crea un nuevo banco
+- `PUT /api/banks/{id}` — Actualiza un banco existente
+- `DELETE /api/banks/{id}` — Elimina un banco
+- `GET /api/banks/{id}/accounts` — Lista cuentas bancarias de un banco
+
+### Cuentas bancarias
+- `GET /api/banks/accounts/{accountId}/transactions` — Lista transacciones de una cuenta
+- `GET /api/banks/accounts/{accountId}/balance` — Consulta saldo de una cuenta
+- `POST /api/banks/accounts/{accountId}/transactions` — Crea una transacción bancaria
+
+### Caja chica
+- `GET /api/cash-registers` — Lista todas las cajas
+- `GET /api/cash-registers/{id}` — Consulta una caja por ID
+- `POST /api/cash-registers` — Crea una nueva caja
+- `PUT /api/cash-registers/{id}` — Actualiza una caja
+- `DELETE /api/cash-registers/{id}` — Elimina una caja
+- `GET /api/cash-registers/{id}/transactions` — Lista transacciones de caja
+- `GET /api/cash-registers/{id}/balance` — Consulta saldo de caja
+- `POST /api/cash-registers/{id}/transactions` — Crea una transacción de caja
+
+### Ejemplo de JSON para crear una cuenta bancaria
+```json
+{
+  "accountNumber": "1234567890",
+  "description": "Cuenta corriente principal",
+  "balance": 10000.0,
+  "bank": { "id": 1 }
+}
+```
+
+### Ejemplo de JSON para crear una transacción bancaria
+```json
+{
+  "amount": 500.0,
+  "description": "Depósito inicial"
+}
+```
+
+### Ejemplo de JSON para crear una caja chica
+```json
+{
+  "name": "Caja Sucursal Centro",
+  "description": "Caja para gastos menores",
+  "balance": 500.0
+}
+```
+
+### Ejemplo de JSON para crear una transacción de caja
+```json
+{
+  "amount": -100.0,
+  "description": "Compra de papelería"
+}
+```
+
+### Pruebas rápidas con Postman
+1. Inicia sesión y obtén el token JWT.
+2. Usa el token en la cabecera `Authorization: Bearer <token>`.
+3. Realiza peticiones a los endpoints anteriores.
+
+---

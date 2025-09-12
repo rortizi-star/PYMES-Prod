@@ -1,1 +1,29 @@
-<p>product-list works!</p>
+<mat-card>
+	<mat-card-title>
+		<mat-icon>inventory_2</mat-icon> Productos
+	</mat-card-title>
+	<div class="table-container">
+		<table mat-table [dataSource]="products" class="mat-elevation-z8">
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef>Nombre</th>
+				<td mat-cell *matCellDef="let prod">{{ prod.name }}</td>
+			</ng-container>
+			<ng-container matColumnDef="code">
+				<th mat-header-cell *matHeaderCellDef>Código</th>
+				<td mat-cell *matCellDef="let prod">{{ prod.code }}</td>
+			</ng-container>
+			<ng-container matColumnDef="price">
+				<th mat-header-cell *matHeaderCellDef>Precio</th>
+				<td mat-cell *matCellDef="let prod">{{ prod.price | currency }}</td>
+			</ng-container>
+			<ng-container matColumnDef="isActive">
+				<th mat-header-cell *matHeaderCellDef>Activo</th>
+				<td mat-cell *matCellDef="let prod">
+					<mat-icon color="primary">{{ prod.isActive ? 'check_circle' : 'cancel' }}</mat-icon>
+				</td>
+			</ng-container>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	</div>
+</mat-card>

@@ -1,2 +1,25 @@
-<h1>Bienvenido al ERP</h1>
-<p>Este es el dashboard principal.</p>
+<div class="dashboard-container">
+	<h2>Bienvenido, {{ userName }}</h2>
+	<div class="dashboard-cards">
+		<mat-card class="dashboard-card" (click)="goTo('accounts')">
+			<mat-icon>account_balance</mat-icon>
+			<div>Total Cuentas</div>
+			<h3>{{ totalAccounts }}</h3>
+		</mat-card>
+		<mat-card class="dashboard-card" (click)="goTo('users')">
+			<mat-icon>people</mat-icon>
+			<div>Total Usuarios</div>
+			<h3>{{ totalUsers }}</h3>
+		</mat-card>
+		<mat-card class="dashboard-card" (click)="goTo('customers')">
+			<mat-icon>person</mat-icon>
+			<div>Total Clientes</div>
+			<h3>{{ totalCustomers }}</h3>
+		</mat-card>
+	</div>
+	<div class="dashboard-actions">
+		<button mat-raised-button color="primary" (click)="goTo('accounts')">Ir a Cuentas</button>
+		<button mat-raised-button color="accent" (click)="goTo('users')">Ir a Usuarios</button>
+		<button mat-raised-button color="warn" (click)="goTo('products')">Ir a Productos</button>
+	</div>
+</div>

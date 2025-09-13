@@ -11,8 +11,8 @@
 			<a mat-list-item routerLink="/purchases" routerLinkActive="active">Compras</a>
 			<a mat-list-item routerLink="/banks" routerLinkActive="active">Bancos</a>
 			<a mat-list-item routerLink="/cash-registers" routerLinkActive="active">Cajas</a>
-			<a mat-list-item routerLink="/reports" routerLinkActive="active">Reportes</a>
-			<a mat-list-item routerLink="/settings" routerLinkActive="active">Configuración</a>
+			<a mat-list-item routerLink="/financial-reports" routerLinkActive="active">Reportes</a>
+			<!-- <a mat-list-item routerLink="/settings" routerLinkActive="active">Configuración</a> -->
 		</mat-nav-list>
 	</mat-sidenav>
 	<mat-sidenav-content>
@@ -22,9 +22,15 @@
 			</button>
 			<span>ERP Sistema</span>
 			<span class="spacer"></span>
-			<button mat-icon-button>
+			<button mat-icon-button [matMenuTriggerFor]="userMenu">
 				<mat-icon>account_circle</mat-icon>
 			</button>
+			<mat-menu #userMenu="matMenu">
+				<button mat-menu-item (click)="logout()">
+					<mat-icon>logout</mat-icon>
+					<span>Cerrar sesión</span>
+				</button>
+			</mat-menu>
 		</mat-toolbar>
 		<div class="main-content">
 			<router-outlet></router-outlet>

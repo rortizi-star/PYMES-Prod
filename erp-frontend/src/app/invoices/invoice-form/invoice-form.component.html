@@ -1,1 +1,44 @@
-<p>invoice-form works!</p>
+
+<mat-card>
+	<mat-card-title>
+		<mat-icon>{{ isEdit ? 'edit' : 'add' }}</mat-icon>
+		{{ isEdit ? 'Editar factura' : 'Nueva factura' }}
+	</mat-card-title>
+	<form [formGroup]="form" (ngSubmit)="save()">
+		<mat-form-field appearance="outline" class="full-width">
+			<mat-label>No. Factura</mat-label>
+			<input matInput formControlName="number" required>
+			<mat-error *ngIf="form.get('number')?.hasError('required')">Requerido</mat-error>
+		</mat-form-field>
+		<mat-form-field appearance="outline" class="full-width">
+			<mat-label>Fecha</mat-label>
+			<input matInput type="date" formControlName="date" required>
+			<mat-error *ngIf="form.get('date')?.hasError('required')">Requerido</mat-error>
+		</mat-form-field>
+		<mat-form-field appearance="outline" class="full-width">
+			<mat-label>Cliente</mat-label>
+			<input matInput formControlName="customer" required>
+			<mat-error *ngIf="form.get('customer')?.hasError('required')">Requerido</mat-error>
+		</mat-form-field>
+		<mat-form-field appearance="outline" class="full-width">
+			<mat-label>Total</mat-label>
+			<input matInput type="number" formControlName="total" required min="0">
+			<mat-error *ngIf="form.get('total')?.hasError('required')">Requerido</mat-error>
+			<mat-error *ngIf="form.get('total')?.hasError('min')">No puede ser negativo</mat-error>
+		</mat-form-field>
+		<mat-form-field appearance="outline" class="full-width">
+			<mat-label>Activo</mat-label>
+			<mat-select formControlName="isActive">
+				<mat-option [value]="true">Sí</mat-option>
+				<mat-option [value]="false">No</mat-option>
+			</mat-select>
+		</mat-form-field>
+		<div class="actions">
+			<button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || loading">
+				<mat-icon>save</mat-icon> Guardar
+			</button>
+			<button mat-button type="button" (click)="cancel()" [disabled]="loading">Cancelar</button>
+		</div>
+		<mat-error *ngIf="error">{{ error }}</mat-error>
+	</form>
+</mat-card>

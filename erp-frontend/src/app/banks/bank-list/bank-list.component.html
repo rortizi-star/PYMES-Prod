@@ -1,1 +1,40 @@
-<p>bank-list works!</p>
+<mat-card>
+	<mat-card-title>
+		<mat-icon>account_balance</mat-icon> Bancos
+		<span class="spacer"></span>
+		<button mat-raised-button color="primary" (click)="addBank()">
+			<mat-icon>add</mat-icon> Nuevo
+		</button>
+	</mat-card-title>
+	<div class="table-container">
+		<table mat-table [dataSource]="banks" class="mat-elevation-z8">
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef>Nombre</th>
+				<td mat-cell *matCellDef="let bank">{{ bank.name }}</td>
+			</ng-container>
+			<ng-container matColumnDef="code">
+				<th mat-header-cell *matHeaderCellDef>Código</th>
+				<td mat-cell *matCellDef="let bank">{{ bank.code }}</td>
+			</ng-container>
+			<ng-container matColumnDef="isActive">
+				<th mat-header-cell *matHeaderCellDef>Activo</th>
+				<td mat-cell *matCellDef="let bank">
+					<mat-icon color="primary">{{ bank.isActive ? 'check_circle' : 'cancel' }}</mat-icon>
+				</td>
+			</ng-container>
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef>Acciones</th>
+				<td mat-cell *matCellDef="let bank">
+					<button mat-icon-button color="primary" (click)="editBank(bank)">
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button mat-icon-button color="warn" (click)="deleteBank(bank)">
+						<mat-icon>delete</mat-icon>
+					</button>
+				</td>
+			</ng-container>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	</div>
+</mat-card>

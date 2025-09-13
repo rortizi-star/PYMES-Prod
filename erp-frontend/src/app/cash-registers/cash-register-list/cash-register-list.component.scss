@@ -1,0 +1,22 @@
+
+.table-container {
+	overflow-x: auto;
+	margin-top: 1rem;
+}
+table {
+	width: 100%;
+	min-width: 400px;
+}
+mat-card {
+	margin: 2rem auto;
+	max-width: 900px;
+}
+mat-card-title {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 1.5rem;
+}
+.spacer {
+	flex: 1 1 auto;
+}

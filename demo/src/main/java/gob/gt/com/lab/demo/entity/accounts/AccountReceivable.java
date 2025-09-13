@@ -19,7 +19,9 @@ public class AccountReceivable {
     private Double balance;
     private LocalDate dueDate;
     private String description;
+
     private boolean settled;
+    private String status;
 
     @OneToMany(mappedBy = "accountReceivable")
     private List<Collection> collections;
@@ -41,4 +43,7 @@ public class AccountReceivable {
     public void setSettled(boolean settled) { this.settled = settled; }
     public List<Collection> getCollections() { return collections; }
     public void setCollections(List<Collection> collections) { this.collections = collections; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

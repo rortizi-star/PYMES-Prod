@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +34,9 @@ public class AuthController {
     public Map<String, Object> login(@RequestBody AuthRequest request) {
         Map<String, Object> response = new HashMap<>();
         try {
-            Authentication authentication = authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
-            );
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
             String token = jwtUtil.generateToken(request.getUsername());
             response.put("token", token);
             response.put("success", true);

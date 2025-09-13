@@ -1,0 +1,45 @@
+
+<mat-card>
+	<mat-card-title>
+		<mat-icon>receipt</mat-icon> Asientos
+		<span class="spacer"></span>
+		<button mat-raised-button color="primary" (click)="addJournalEntry()">
+			<mat-icon>add</mat-icon> Nuevo
+		</button>
+	</mat-card-title>
+	<div class="table-container">
+		<table mat-table [dataSource]="journalEntries" class="mat-elevation-z8">
+			<ng-container matColumnDef="date">
+				<th mat-header-cell *matHeaderCellDef>Fecha</th>
+				<td mat-cell *matCellDef="let entry">{{ entry.date | date:'shortDate' }}</td>
+			</ng-container>
+			<ng-container matColumnDef="description">
+				<th mat-header-cell *matHeaderCellDef>Descripción</th>
+				<td mat-cell *matCellDef="let entry">{{ entry.description }}</td>
+			</ng-container>
+			<ng-container matColumnDef="amount">
+				<th mat-header-cell *matHeaderCellDef>Monto</th>
+				<td mat-cell *matCellDef="let entry">{{ entry.amount | currency:'GTQ' }}</td>
+			</ng-container>
+			<ng-container matColumnDef="isActive">
+				<th mat-header-cell *matHeaderCellDef>Activo</th>
+				<td mat-cell *matCellDef="let entry">
+					<mat-icon color="primary">{{ entry.isActive ? 'check_circle' : 'cancel' }}</mat-icon>
+				</td>
+			</ng-container>
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef>Acciones</th>
+				<td mat-cell *matCellDef="let entry">
+					<button mat-icon-button color="primary" (click)="editJournalEntry(entry)">
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button mat-icon-button color="warn" (click)="deleteJournalEntry(entry)">
+						<mat-icon>delete</mat-icon>
+					</button>
+				</td>
+			</ng-container>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	</div>
+</mat-card>

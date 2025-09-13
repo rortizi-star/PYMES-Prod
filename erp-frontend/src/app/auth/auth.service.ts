@@ -23,10 +23,16 @@ export class AuthService {
   }
 
   isLoggedIn(): boolean {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return false;
+    }
     return !!localStorage.getItem('token');
   }
 
   getToken(): string | null {
+    if (typeof window === 'undefined' || !window.localStorage) {
+      return null;
+    }
     return localStorage.getItem('token');
   }
 }

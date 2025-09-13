@@ -19,7 +19,9 @@ public class AccountPayable {
     private Double balance;
     private LocalDate dueDate;
     private String description;
+
     private boolean settled;
+    private String status;
 
     @OneToMany(mappedBy = "accountPayable")
     private List<Payment> payments;
@@ -41,4 +43,7 @@ public class AccountPayable {
     public void setSettled(boolean settled) { this.settled = settled; }
     public List<Payment> getPayments() { return payments; }
     public void setPayments(List<Payment> payments) { this.payments = payments; }
+
+    public String getStatus() { return status; }
+    public void setStatus(String status) { this.status = status; }
 }

@@ -1,1 +1,41 @@
-<p>cash-register-list works!</p>
+
+<mat-card>
+	<mat-card-title>
+		<mat-icon>point_of_sale</mat-icon> Caja chica
+		<span class="spacer"></span>
+		<button mat-raised-button color="primary" (click)="addCashRegister()">
+			<mat-icon>add</mat-icon> Nuevo
+		</button>
+	</mat-card-title>
+	<div class="table-container">
+		<table mat-table [dataSource]="cashRegisters" class="mat-elevation-z8">
+			<ng-container matColumnDef="name">
+				<th mat-header-cell *matHeaderCellDef>Nombre</th>
+				<td mat-cell *matCellDef="let cashRegister">{{ cashRegister.name }}</td>
+			</ng-container>
+			<ng-container matColumnDef="balance">
+				<th mat-header-cell *matHeaderCellDef>Saldo</th>
+				<td mat-cell *matCellDef="let cashRegister">{{ cashRegister.balance | currency:'GTQ' }}</td>
+			</ng-container>
+			<ng-container matColumnDef="isActive">
+				<th mat-header-cell *matHeaderCellDef>Activo</th>
+				<td mat-cell *matCellDef="let cashRegister">
+					<mat-icon color="primary">{{ cashRegister.isActive ? 'check_circle' : 'cancel' }}</mat-icon>
+				</td>
+			</ng-container>
+			<ng-container matColumnDef="actions">
+				<th mat-header-cell *matHeaderCellDef>Acciones</th>
+				<td mat-cell *matCellDef="let cashRegister">
+					<button mat-icon-button color="primary" (click)="editCashRegister(cashRegister)">
+						<mat-icon>edit</mat-icon>
+					</button>
+					<button mat-icon-button color="warn" (click)="deleteCashRegister(cashRegister)">
+						<mat-icon>delete</mat-icon>
+					</button>
+				</td>
+			</ng-container>
+			<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+			<tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+		</table>
+	</div>
+</mat-card>

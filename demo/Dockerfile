@@ -12,14 +12,16 @@ WORKDIR /workspace
 RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
 
 # Copy pom to take advantage of layer caching for dependencies
-# (do not assume .mvn or mvnw exist in the context)
-COPY pom.xml ./
+# When Render builds from the repository root (build context = repo root),
+# the files live under the `demo/` directory. Use repo-root-relative paths
+# so the same Dockerfile works when Render uses the repo root as context.
+COPY demo/pom.xml ./
 
 # Download dependencies (offline step) to speed up subsequent builds
 RUN mvn -B -f pom.xml dependency:go-offline
 
 # Copy sources and build the application
-COPY src ./src
+COPY demo/src ./src
 RUN mvn -B -f pom.xml -DskipTests package
 
 #########################
@@ -33,7 +35,8 @@ WORKDIR /app
 COPY --from=builder /workspace/target/*.jar /app/app.jar
 
 # Copiar entrypoint que configura NODE_NAME y ejecuta la JVM
-COPY docker-entrypoint.sh /app/docker-entrypoint.sh
+# Use repo-root-relative path so Render's build context can locate the file
+COPY demo/docker-entrypoint.sh /app/docker-entrypoint.sh
 RUN chmod +x /app/docker-entrypoint.sh
 
 # Instalar curl para los healthchecks en el contenedor runtime (pequeña dependencia para demo)

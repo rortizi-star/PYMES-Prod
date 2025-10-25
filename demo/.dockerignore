@@ -1,0 +1,12 @@
+target
+.mvn
+mvnw
+*.log
+*.tmp
+.idea
+.vscode
+node_modules
+erp-frontend/node_modules
+*.iml
+*.class
+/.git

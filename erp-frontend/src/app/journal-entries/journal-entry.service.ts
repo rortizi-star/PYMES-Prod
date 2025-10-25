@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class JournalEntryService {
-  private apiUrl = 'http://localhost:8080/api/journal-entries';
+  private apiUrl = 'http://localhost:8082/api/journal-entries';
 
   constructor(private http: HttpClient) { }
 

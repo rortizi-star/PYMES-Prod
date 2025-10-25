@@ -1,0 +1,51 @@
+# Render manifest for PYMES (finalized)
+# Usage: In the Render dashboard choose "Create from YAML" and paste this file,
+# or push it to the repo and create a service from YAML.
+
+# Managed Postgres for demo/staging
+databases:
+  - name: pymes-db
+    plan: starter
+    region: oregon
+
+# Backend service (Docker)
+services:
+  - type: web_service
+    name: pymes-backend
+    env: docker
+    region: oregon
+    plan: starter
+    dockerfilePath: demo/Dockerfile
+    # Build command builds the JAR inside the Docker build context
+    buildCommand: "./mvnw -f demo clean package -DskipTests"
+    # Use 2 instances for basic load balancing
+    instanceCount: 2
+    autoDeploy: true
+    envVars:
+      # Render will populate DATABASE_URL for the managed Postgres; fromDatabase maps it
+      - key: JDBC_DATABASE_URL
+        fromDatabase: pymes-db
+      - key: JDBC_DATABASE_USERNAME
+        value: pymes
+      - key: JDBC_DATABASE_PASSWORD
+        value: postgres
+      - key: JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_JAVA_OPTIONS
+        value: "-Xms128m -Xmx384m"
+
+# Optional: static site for frontend (uncomment if you want Render to host the Angular frontend)
+# staticSites:
+#   - name: pymes-frontend
+#     env: static
+#     buildCommand: "cd erp-frontend && npm ci && npm run build -- --output-path=dist"
+#     staticPublishPath: erp-frontend/dist
+
+# Notes:
+# - The backend Dockerfile uses an entrypoint that sets NODE_NAME from Render runtime metadata
+#   (RENDER_INSTANCE_ID / RENDER_SERVICE_ID / hostname) so audit_log.node will contain a readable id.
+# - For production, replace the starter database plan with an appropriate production plan and
+#   consider managing DB credentials with Render's secrets instead of embedding them here.
+# - Consider disabling `JPA_HIBERNATE_DDL_AUTO=update` in production and use Flyway/Liquibase for migrations.
+# - If you want the frontend behind the same domain, use Render's services + a custom domain and
+#   configure CORS accordingly (the backend CORS allows localhost:4200 by default).

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class CashRegisterService {
-  private apiUrl = 'http://localhost:8080/api/cash-registers';
+  private apiUrl = 'http://localhost:8082/api/cash-registers';
 
   constructor(private http: HttpClient) { }
 

@@ -1,0 +1,66 @@
+name: CI - build backend (and optional docker push)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Build backend JAR
+        working-directory: demo
+        run: |
+          chmod +x mvnw || true
+          ./mvnw -B -f demo/pom.xml clean package -DskipTests
+
+      - name: Verify render.yaml present
+        run: |
+          if [ ! -f render.yaml ] && [ ! -f render.yml ]; then
+            echo "render.yaml not found in repository root" && exit 1
+          fi
+
+  docker-build-and-push:
+    needs: build-backend
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub (if provided)
+        if: secrets.DOCKERHUB_USERNAME && secrets.DOCKERHUB_TOKEN
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image (optional)
+        uses: docker/build-push-action@v4
+        with:
+          context: ./demo
+          file: ./demo/Dockerfile
+          push: ${{ secrets.DOCKERHUB_USERNAME && secrets.DOCKERHUB_TOKEN }}
+          tags: ${{ secrets.DOCKERHUB_USERNAME || 'local' }}/pymes-demo:ci-${{ github.sha }}
+
+      - name: Info
+        run: |
+          echo "If DOCKERHUB_USERNAME/DOCKERHUB_TOKEN are set in repo secrets, the image was pushed." 

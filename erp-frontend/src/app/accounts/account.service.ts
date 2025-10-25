@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AccountService {
-  private apiUrl = 'http://localhost:8080/api/accounts';
+  private apiUrl = 'http://localhost:8082/api/accounts';
   constructor(private http: HttpClient) {}
   getAccounts(): Observable<any[]> {
     return this.http.get<any[]>(this.apiUrl);

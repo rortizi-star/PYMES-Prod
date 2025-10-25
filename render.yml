@@ -1,0 +1,51 @@
+# Render deployment manifest for PYMES backend
+# This file is a template. Replace placeholders (name, region, plan) as needed.
+
+databases:
+  - name: pymes-db
+    type: postgres
+    plan: starter # change to production plan if needed
+
+services:
+  - type: web_service
+    name: pymes-backend
+    env: docker
+    region: oregon        # change to your preferred region
+    plan: starter         # free/starter/standard depending on your account
+    dockerfilePath: demo/Dockerfile
+    instanceCount: 2      # deploy 2 replicas for basic load balancing
+  autoDeploy: true
+  # buildCommand removed: the Dockerfile performs the build in its builder stage
+    # If your Dockerfile exposes the app and sets an ENTRYPOINT/CMD, you can omit startCommand
+    # startCommand: "java -jar /app/app.jar"
+    envVars:
+      # Use the managed database created above - Render will inject the connection string
+      - key: JDBC_DATABASE_URL
+        fromDatabase: pymes-db
+      - key: JDBC_DATABASE_USERNAME
+        value: pymes
+      - key: JDBC_DATABASE_PASSWORD
+        value: postgres
+      - key: JPA_HIBERNATE_DDL_AUTO
+        value: update
+      # Configure JVM limits if needed
+      - key: SPRING_JAVA_OPTIONS
+        value: "-Xms128m -Xmx384m"
+
+# Optional: static site for frontend (if you want to host Angular as a static site on Render)
+# staticSites:
+#   - name: pymes-frontend
+#     service: static_site
+#     env: static
+#     buildCommand: "cd erp-frontend && npm ci && npm run build -- --output-path=dist"
+#     staticPublishPath: erp-frontend/dist
+
+# Notes:
+# - After deploy, Render will provide a DATABASE_URL for the managed Postgres. The `fromDatabase` key
+#   instructs Render to set the JDBC_DATABASE_URL to the proper connection string.
+# - If you prefer to use an external Postgres (e.g., your own cloud DB), remove the `databases` block
+#   and set JDBC_DATABASE_URL/JDBC_DATABASE_USERNAME/JDBC_DATABASE_PASSWORD to the external values.
+# - Render's load balancer will distribute traffic across the `instanceCount` replicas.
+# - To allow the app to record which node handled a request, you can rely on the container hostname
+#   or set a NODE_NAME env var per instance using a startup script that reads Render's instance metadata
+#   (Render provides metadata env vars at runtime). If you need help wiring that, tell me and lo hacemos.

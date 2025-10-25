@@ -16,8 +16,7 @@ services:
     region: oregon
     plan: starter
     dockerfilePath: demo/Dockerfile
-    # Build command builds the JAR inside the Docker build context
-    buildCommand: "./mvnw -f demo clean package -DskipTests"
+  # Build command removed: the Dockerfile performs the build in its builder stage
     # Use 2 instances for basic load balancing
     instanceCount: 2
     autoDeploy: true

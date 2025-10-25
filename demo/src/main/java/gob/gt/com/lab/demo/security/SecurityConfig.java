@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/audit/**").authenticated()
                 .requestMatchers("/api/inventory/**").authenticated()
                 .requestMatchers("/api/users/**").permitAll()
+                .requestMatchers("/healthz").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
@@ -62,8 +63,19 @@ public class SecurityConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.addAllowedOrigin("http://localhost:4200");
-        config.addAllowedOrigin("http://localhost:4300");
+        // Allow origins configured via environment variable FRONTEND_ORIGINS (comma-separated)
+        // Fallback to localhost dev ports if not provided
+        String fronts = System.getenv("FRONTEND_ORIGINS");
+        if (fronts != null && !fronts.isBlank()) {
+            String[] parts = fronts.split(",");
+            for (String p : parts) {
+                String origin = p.trim();
+                if (!origin.isEmpty()) config.addAllowedOrigin(origin);
+            }
+        } else {
+            config.addAllowedOrigin("http://localhost:4200");
+            config.addAllowedOrigin("http://localhost:4300");
+        }
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         config.setAllowCredentials(true);

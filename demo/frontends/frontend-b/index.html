@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PYMES Test Frontend B</title>
+  <style>
+    body{font-family:Inter,system-ui,Segoe UI,Arial;margin:20px}
+    .box{border:1px solid #ddd;padding:12px;border-radius:8px;max-width:800px}
+    button{padding:6px 10px;margin-right:6px}
+    ul{padding-left:20px}
+  </style>
+</head>
+<body>
+  <h2>PYMES — Test Frontend B (burst)</h2>
+  <div class="box">
+    <p>Este frontend manda una ráfaga de peticiones y lista las respuestas con el campo <code>node</code>.</p>
+    <label>Backend URL:</label>
+    <input id="backendUrl" style="width:100%" value="%BACKEND_URL%" />
+    <p>
+      <label>Cantidad de requests:</label>
+      <input id="count" type="number" value="10" style="width:80px" />
+      <button id="run">Run</button>
+    </p>
+    <h4>Resultados</h4>
+    <div id="results"><em>—</em></div>
+  </div>
+
+  <script>
+    function appendLine(text){
+      const el = document.getElementById('results');
+      if(el.innerHTML.trim()==='—') el.innerHTML = '';
+      const p = document.createElement('div'); p.textContent = text; el.appendChild(p);
+    }
+
+    document.getElementById('run').addEventListener('click', async () => {
+      const base = document.getElementById('backendUrl').value.replace(/\/$/,'');
+      const n = parseInt(document.getElementById('count').value) || 10;
+      appendLine('Enviando '+n+' requests...');
+      for(let i=0;i<n;i++){
+        try{
+          const res = await fetch(base + '/api/audit/log', { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify({message:'burst-'+i}) });
+          const j = await res.json();
+          appendLine(`#${i+1} -> id:${j.id||'-'} node:${j.node||j.nodeName||'-'}`);
+        }catch(e){ appendLine(`#${i+1} -> ERROR: ${e.message}`); }
+      }
+    })
+  </script>
+</body>
+</html>

@@ -35,10 +35,15 @@ services:
 
 # Optional: static site for frontend (uncomment if you want Render to host the Angular frontend)
 # staticSites:
-#   - name: pymes-frontend
-#     env: static
-#     buildCommand: "cd erp-frontend && npm ci && npm run build -- --output-path=dist"
-#     staticPublishPath: erp-frontend/dist
+  - name: pymes-frontend-a
+    env: static
+    buildCommand: "echo 'noop'"
+    staticPublishPath: demo/frontends/frontend-a
+
+  - name: pymes-frontend-b
+    env: static
+    buildCommand: "echo 'noop'"
+    staticPublishPath: demo/frontends/frontend-b
 
 # Notes:
 # - The backend Dockerfile uses an entrypoint that sets NODE_NAME from Render runtime metadata

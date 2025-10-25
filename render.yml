@@ -32,13 +32,17 @@ services:
       - key: SPRING_JAVA_OPTIONS
         value: "-Xms128m -Xmx384m"
 
-# Optional: static site for frontend (if you want to host Angular as a static site on Render)
-# staticSites:
-#   - name: pymes-frontend
-#     service: static_site
-#     env: static
-#     buildCommand: "cd erp-frontend && npm ci && npm run build -- --output-path=dist"
-#     staticPublishPath: erp-frontend/dist
+# Optional: static sites for frontends used in testing
+staticSites:
+  - name: pymes-frontend-a
+    env: static
+    buildCommand: "echo 'noop'"
+    staticPublishPath: demo/frontends/frontend-a
+
+  - name: pymes-frontend-b
+    env: static
+    buildCommand: "echo 'noop'"
+    staticPublishPath: demo/frontends/frontend-b
 
 # Notes:
 # - After deploy, Render will provide a DATABASE_URL for the managed Postgres. The `fromDatabase` key

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PYMES Test Frontend A</title>
+  <style>
+    body{font-family:Inter,system-ui,Segoe UI,Arial;margin:24px}
+    .card{border:1px solid #ddd;padding:16px;border-radius:8px;max-width:720px}
+    button{padding:8px 12px;margin-top:8px}
+    pre{background:#f6f8fa;padding:12px;border-radius:6px}
+  </style>
+</head>
+<body>
+  <h2>PYMES — Test Frontend A</h2>
+  <div class="card">
+    <p>Este simple frontend envía una entrada de auditoría al backend y muestra la respuesta (incluye el campo <code>node</code>).</p>
+
+    <label>Backend URL (incluye protocolo), por ejemplo <code>https://pymes-backend.onrender.com</code>:</label>
+    <input id="backendUrl" style="width:100%" value="%BACKEND_URL%" />
+
+    <p>
+      <label>Mensaje de prueba:</label>
+      <input id="message" style="width:100%" value="Prueba desde Frontend A" />
+    </p>
+
+    <button id="send">Enviar auditoría</button>
+
+    <h3>Última respuesta</h3>
+    <pre id="output">—</pre>
+  </div>
+
+  <script>
+    const out = id => document.getElementById(id);
+    document.getElementById('send').addEventListener('click', async () => {
+      const base = out('backendUrl').value.trim();
+      if(!base){ alert('Introduce BACKEND URL'); return }
+      const url = base.replace(/\/$/, '') + '/api/audit/log';
+      const payload = { message: out('message').value };
+      out('output').textContent = 'Enviando...';
+      try{
+        const res = await fetch(url, { method:'POST', headers:{ 'Content-Type':'application/json' }, body: JSON.stringify(payload), credentials: 'include' });
+        const text = await res.text();
+        // intentar parsear JSON
+        try{ const j = JSON.parse(text); out('output').textContent = JSON.stringify(j, null, 2); }
+        catch(e){ out('output').textContent = text }
+      }catch(err){ out('output').textContent = 'Error: '+err.message }
+    })
+  </script>
+</body>
+</html>

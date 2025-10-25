@@ -36,13 +36,13 @@ services:
 staticSites:
   - name: pymes-frontend-a
     env: static
-    buildCommand: "echo 'noop'"
-    staticPublishPath: demo/frontends/frontend-a
+    buildCommand: "cd erp-frontend && npm ci && npm run build -- --output-path=dist && echo \"window.__BACKEND_URL__='${BACKEND_URL}'\" > dist/config.js"
+    staticPublishPath: erp-frontend/dist
 
   - name: pymes-frontend-b
     env: static
-    buildCommand: "echo 'noop'"
-    staticPublishPath: demo/frontends/frontend-b
+    buildCommand: "cd erp-frontend && npm ci && npm run build -- --output-path=dist && echo \"window.__BACKEND_URL__='${BACKEND_URL}'\" > dist/config.js"
+    staticPublishPath: erp-frontend/dist
 
 # Notes:
 # - After deploy, Render will provide a DATABASE_URL for the managed Postgres. The `fromDatabase` key

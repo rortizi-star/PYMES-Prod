@@ -34,16 +34,16 @@ services:
         value: "-Xms128m -Xmx384m"
 
 # Optional: static site for frontend (uncomment if you want Render to host the Angular frontend)
-# staticSites:
+staticSites:
   - name: pymes-frontend-a
     env: static
-    buildCommand: "echo 'noop'"
-    staticPublishPath: demo/frontends/frontend-a
+    buildCommand: "cd erp-frontend && npm ci && npm run build -- --output-path=dist && echo \"window.__BACKEND_URL__='${BACKEND_URL}'\" > dist/config.js"
+    staticPublishPath: erp-frontend/dist
 
   - name: pymes-frontend-b
     env: static
-    buildCommand: "echo 'noop'"
-    staticPublishPath: demo/frontends/frontend-b
+    buildCommand: "cd erp-frontend && npm ci && npm run build -- --output-path=dist && echo \"window.__BACKEND_URL__='${BACKEND_URL}'\" > dist/config.js"
+    staticPublishPath: erp-frontend/dist
 
 # Notes:
 # - The backend Dockerfile uses an entrypoint that sets NODE_NAME from Render runtime metadata
